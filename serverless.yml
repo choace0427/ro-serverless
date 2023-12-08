@@ -12,8 +12,8 @@ provider:
   timeout: 90
   stage: development
   environment:
-    USER_POOL_ID: "us-east-1_S7sLLIp4a"
-    CLIENT_ID: "564kqj04mi2knsf7oratc5upbk"
+    USER_POOL_ID: 'us-east-1_S7sLLIp4a'
+    CLIENT_ID: '564kqj04mi2knsf7oratc5upbk'
     S3_BUCKET_NAME: ${self:custom.bucket}
 
 plugins:
@@ -23,8 +23,8 @@ plugins:
 
 custom:
   webpack:
-    webpackConfig: "webpack.config.js"
-    packager: "npm"
+    webpackConfig: 'webpack.config.js'
+    packager: 'npm'
     includeModules: true
   serverless-offline:
     httpPort: 4000
@@ -47,8 +47,18 @@ functions:
           path: /api/auth/signup
           method: post
           cors:
-            origin: "*"
+            origin: '*'
             headers: ${self:custom.allowedHeaders}
+  signin:
+    handler: api/auth/signin.handler
+    events:
+      - http:
+          path: /api/auth/signin
+          method: post
+          cors:
+            origin: '*'
+            headers: ${self:custom.allowedHeaders}
+
   verify:
     handler: api/auth/verify.handler
     events:
@@ -56,7 +66,25 @@ functions:
           path: /api/auth/verify
           method: post
           cors:
-            origin: "*"
+            origin: '*'
+            headers: ${self:custom.allowedHeaders}
+  forgetpassword:
+    handler: api/auth/forgetpassword.handler
+    events:
+      - http:
+          path: /api/auth/forgetpassword
+          method: post
+          cors:
+            origin: '*'
+            headers: ${self:custom.allowedHeaders}
+  resetpassword:
+    handler: api/auth/resetpassword.handler
+    events:
+      - http:
+          path: /api/auth/resetpassword
+          method: post
+          cors:
+            origin: '*'
             headers: ${self:custom.allowedHeaders}
 
 resources:
@@ -72,8 +100,8 @@ resources:
         Policies:
           PasswordPolicy:
             MinimumLength: 6
-        AutoVerifiedAttributes: ["email"]
-        UsernameAttributes: ["email"]
+        AutoVerifiedAttributes: ['email']
+        UsernameAttributes: ['email']
     UserClient:
       Type: AWS::Cognito::UserPoolClient
       Properties:
@@ -83,17 +111,17 @@ resources:
         AccessTokenValidity: 5
         IdTokenValidity: 5
         ExplicitAuthFlows:
-          - "ADMIN_NO_SRP_AUTH"
+          - 'ADMIN_NO_SRP_AUTH'
     StorageBucket:
-      Type: "AWS::S3::Bucket"
+      Type: 'AWS::S3::Bucket'
       Properties:
         BucketName: ${self:custom.bucket}
         CorsConfiguration:
           CorsRules:
             - AllowedOrigins:
-                - "*"
+                - '*'
               AllowedHeaders:
-                - "*"
+                - '*'
               AllowedMethods:
                 - GET
                 - PUT
@@ -106,7 +134,7 @@ resources:
       Properties:
         RoleName: ${self:service}-${self:custom.stage}-dynamodb-role
         AssumeRolePolicyDocument:
-          Version: "2012-10-17"
+          Version: '2012-10-17'
           Statement:
             - Effect: Allow
               Principal:
@@ -117,7 +145,7 @@ resources:
         Policies:
           - PolicyName: ${self:service}-${self:custom.stage}-dynamodb-policy
             PolicyDocument:
-              Version: "2012-10-17"
+              Version: '2012-10-17'
               Statement:
                 - Effect: Allow
                   Action:
@@ -126,4 +154,4 @@ resources:
                     - ses:*
                     - cognito-idp:*
                   Resource:
-                    - "*"
+                    - '*'
