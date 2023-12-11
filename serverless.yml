@@ -58,6 +58,15 @@ functions:
           cors:
             origin: '*'
             headers: ${self:custom.allowedHeaders}
+  signout:
+    handler: api/auth/signout.handler
+    events:
+      - http:
+          path: /api/auth/signout
+          method: post
+          cors:
+            origin: '*'
+            headers: ${self:custom.allowedHeaders}
 
   verify:
     handler: api/auth/verify.handler
