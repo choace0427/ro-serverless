@@ -87,6 +87,16 @@ functions:
             origin: '*'
             headers: ${self:custom.allowedHeaders}
 
+  adduser:
+    handler: api/users/create.handler
+    events:
+      - http:
+          path: /api/users/create
+          method: post
+          cors:
+            origin: '*'
+            headers: ${self:custom.allowedHeaders}
+
 resources:
   Resources:
     UserPool:
